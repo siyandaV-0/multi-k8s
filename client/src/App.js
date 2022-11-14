@@ -21,7 +21,7 @@ function App() {
           </a>
           <Link to="/">Home</Link>
           <Link to="/otherpage">Other Page</Link>
-          <p> Let test if the mutli-deployment works!</p>
+          <p> Updates</p>
         </header>
         <div>
           <Route exact path="/" component={Fib} />
