@@ -7,9 +7,9 @@ executors:
         auth:
           username: $DOCKER_ID
           password: $DOCKER_PASSWORD  # context / project UI env-var reference
-  environment:
-    SHA=$(git rev-parse HEAD)
-    CLOUDSDK_CORE_DISABLE_PROMTS=1
+    environment:
+      SHA=$(git rev-parse HEAD)
+      CLOUDSDK_CORE_DISABLE_PROMTS=1
     
 jobs:
   google-cloud-setup:
