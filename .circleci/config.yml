@@ -8,9 +8,9 @@ executors:
           username: $DOCKER_ID
           password: $DOCKER_PASSWORD  # context / project UI env-var reference
     environment:
-      SHA=$(git rev-parse HEAD)
-      CLOUDSDK_CORE_DISABLE_PROMTS=1
-    
+      SHA: $(git rev-parse HEAD)
+      CLOUDSDK_CORE_DISABLE_PROMTS: 1
+
 jobs:
   google-cloud-setup:
     executor: docker-publisher
@@ -49,7 +49,8 @@ jobs:
       - setup_remote_docker
       - run:
           name: "Load archived Docker image"
-          command: docker load -i /tmp/workspace/image.tar 
+          command: |
+            docker load -i /tmp/workspace/image.tar 
       - run:
           name: "run tests on react-test image"
           command: |
@@ -59,7 +60,7 @@ jobs:
     executor: docker-publisher
     steps:
       - checkout
-      - run: 
+      - run:
           name: "Run Bash Script" 
           command: |
             bash ./deploy.sh
@@ -76,8 +77,8 @@ workflows:
           filters:
             branches:
               only: master
-            requires:
-              - google-cloud-setup
+          requires:
+            - google-cloud-setup
       - script:
           filters:
             branches:
