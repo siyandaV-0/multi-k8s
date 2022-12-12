@@ -1,7 +1,7 @@
 version: 2.1
 
 executors:
-  docker-publisher:
+  google-cloud-sdk:
     docker:
       - image:  google/cloud-sdk
         auth:
@@ -11,18 +11,7 @@ executors:
       CLOUDSDK_CORE_DISABLE_PROMTS: 1
 
 jobs:
-  google-cloud-setup:
-    executor: docker-publisher
-    steps:
-      - run:
-          name: "Authorize Google Cloud SDK"
-          command: |
-            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
-            gcloud --quiet config set project $GOOGLE_PROJECT_ID
-            gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
-            gcloud --quiet container clusters get-credentials $MULTI_CLUSTER
   before-install:
-    executor: docker-publisher
     steps:
       - checkout
       - setup_remote_docker
@@ -38,9 +27,7 @@ jobs:
           root: .
           paths:
             - ./image.tar
-
   script:
-    executor: docker-publisher
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -55,11 +42,18 @@ jobs:
             docker run -e CI=true siyandav0/react-test npm test
 
   deploy:
-    executor: docker-publisher
+    executor: google-cloud-sdk
     steps:
       - checkout
       - setup_remote_docker:
           docker_layer_caching: true
+      - run:
+          name: "Authorize Google Cloud SDK"
+          command: |
+            echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
+            gcloud --quiet config set project $GOOGLE_PROJECT_ID
+            gcloud --quiet config set compute/zone $GOOGLE_COMPUTE_ZONE
+            gcloud --quiet container clusters get-credentials $MULTI_CLUSTER
       - run:
           name: "Run Bash Script" 
           command: |
@@ -68,18 +62,12 @@ jobs:
 
 workflows:
   version: 2
-  setup-build-test-deploy:
+  build-test-deploy:
     jobs:
-      - google-cloud-setup:
-          filters:
-            branches:
-              only: master
       - before-install:
           filters:
             branches:
               only: master
-          requires:
-            - google-cloud-setup
       - script:
           filters:
             branches:
