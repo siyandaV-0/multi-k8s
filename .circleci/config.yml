@@ -59,11 +59,10 @@ jobs:
     executor: docker-publisher
     steps:
       - checkout
-      - setup_remote_docker 
+      # - setup_remote_docker 
       - run:
           name: "Run Bash Script" 
           command: |
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
             SHA=$(git rev-parse HEAD)
             bash ./deploy.sh
 
