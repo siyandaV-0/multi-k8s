@@ -12,5 +12,5 @@ docker push siyandav0/multi-worker:$CIRCLE_SHA1
 
 kubectl apply -f k8s
 kubectl set image deployments/server-deployment server=siyandav0/multi-server:$CIRCLE_SHA1
-kubectl set image deployments/client-deployment server=siyandav0/multi-client:$CIRCLE_SHA1
-kubectl set image deployments/worker-deployment server=siyandav0/multi-worker:$CIRCLE_SHA1
+kubectl set image deployments/client-deployment client=siyandav0/multi-client:$CIRCLE_SHA1
+kubectl set image deployments/worker-deployment worker=siyandav0/multi-worker:$CIRCLE_SHA1
