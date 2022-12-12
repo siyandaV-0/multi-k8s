@@ -12,6 +12,7 @@ executors:
 
 jobs:
   before-install:
+    executor: google-cloud-sdk
     steps:
       - checkout
       - setup_remote_docker
@@ -28,6 +29,7 @@ jobs:
           paths:
             - ./image.tar
   script:
+    executor: google-cloud-sdk
     steps:
       - attach_workspace:
           at: /tmp/workspace
