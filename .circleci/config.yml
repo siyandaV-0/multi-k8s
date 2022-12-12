@@ -7,6 +7,8 @@ executors:
         auth:
           username: $DOCKER_ID
           password: $DOCKER_PASSWORD  # context / project UI env-var reference
+    environment:
+      CLOUDSDK_CORE_DISABLE_PROMTS: 1
 
 jobs:
   google-cloud-setup:
@@ -15,7 +17,6 @@ jobs:
       - run:
           name: "Authorize Google Cloud SDK"
           command: |
-            CLOUDSDK_CORE_DISABLE_PROMTS= 1
             echo $GCLOUD_SERVICE_KEY | gcloud auth activate-service-account --key-file=-
             gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
             gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
