@@ -60,12 +60,10 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-          version: 22.06.0-beta.0 
       - run:
           name: "Run Bash Script" 
           command: |
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-            SHA=$(git rev-parse HEAD)
             bash ./deploy.sh
 
 workflows:
