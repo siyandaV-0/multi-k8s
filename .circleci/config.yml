@@ -63,7 +63,7 @@ jobs:
       - run:
           name: "Run Bash Script" 
           command: |
-            SHA = $(git rev-parse HEAD)
+            SHA=$(git rev-parse HEAD)
             bash ./deploy.sh
 
 workflows:
